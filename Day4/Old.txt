@@ -1,0 +1,37 @@
+
+// fn main() {
+//     let mut str1;
+//     let mut str2;
+//     let mut parts;
+//     let mut collection: Vec<&str>;
+//     let mut set1: Vec<i32> = Vec::new();
+//     let mut set2: Vec<i32> = Vec::new();
+//     set2.push(0);
+//     let file: String = fs::read_to_string("input.txt").expect("Error in reading the file");
+//     let lines = file.lines();
+//     for line in lines {
+//         parts = line.split(" | ");
+//         collection = parts.collect();
+//         str2 = collection[1].chars();
+
+//         for s in str2{
+//             if s.is_numeric() {
+//                 set2.push(s.to_digit(10).unwrap() as i32);
+//                 let s = str2.next().unwrap();
+//                 if s.is_numeric(){
+//                     set2.insert(set2.len()-1, (set2[set2.len()-1]*10) + s.to_digit(10).unwrap() as i32)
+//                 }
+//             }
+//         }
+//         parts =  collection[0].split(": ");
+//         collection = parts.collect();
+//         str1 = collection[1];
+//         for num in set2 {
+//             println!("{}, ", num);
+//         }
+            
+//         //split by the " | "
+//     }
+//     println!("{}", 1);
+// }
+
