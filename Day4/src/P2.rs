@@ -1,6 +1,9 @@
 use std::{fs};
+use std::time::{Duration, Instant};
 
 fn main() {
+    let start = Instant::now();
+
     let mut str1;
     let mut str2;
     let mut s;
@@ -53,4 +56,7 @@ fn main() {
         total += x;
     }
     println!("{}", total);
+    let duration = start.elapsed();
+    println!("Time elapsed in expensive_function() is: {:?}", duration);
+    
 }
