@@ -57,7 +57,6 @@ func part1(a Almanac) int {
 	seeds := a.seeds
 	for index := range a.maps {
 		seeds = part1_helper(seeds, a.maps[index])
-		fmt.Println(seeds)
 	}
 
 	smallest := -1
@@ -94,10 +93,8 @@ func part2(a Almanac) int {
 		seeds = append(seeds, a.seeds[index])
 		seeds = append(seeds, a.seeds[index]+a.seeds[index+1]-1)
 	}
-	//for index := range a.maps {
 	for index := 0; index < len(a.maps); index += 1 {
 		seeds = part2_helper(seeds, a.maps[index])
-		//fmt.Println(seeds)
 	}
 
 	smallest := -1
@@ -106,15 +103,12 @@ func part2(a Almanac) int {
 			smallest = seeds[index]
 		}
 	}
-	// fmt.Print("The Final seed is: ")
-	// fmt.Println(seeds)
 	return smallest
 }
 
 func part2_helper(seeds []int, setMap []int) []int {
 	out := []int{}
 	for seedIndex := 0; seedIndex < len(seeds); seedIndex += 2 {
-		fmt.Println(seeds)
 		boolSet := false
 		seedHigh := seeds[seedIndex+1]
 		seedLow := seeds[seedIndex]
@@ -125,21 +119,18 @@ func part2_helper(seeds []int, setMap []int) []int {
 				out = append(out, setMap[mapIndex]-mapLow+seedLow)
 				out = append(out, setMap[mapIndex]-mapLow+seedHigh)
 				boolSet = true
-				fmt.Print("1:")
 			} else if !boolSet && mapLow <= seedLow && seedHigh > mapHigh && seedLow <= mapHigh { // Left Range overflow
 				out = append(out, setMap[mapIndex]-mapLow+seedLow)
 				out = append(out, setMap[mapIndex]-mapLow+mapHigh)
 				seeds = append(seeds, mapHigh+1)
 				seeds = append(seeds, seedHigh)
 				boolSet = true
-				fmt.Print("2:")
 			} else if !boolSet && mapLow > seedLow && seedHigh <= mapHigh && seedHigh >= mapLow { // Right Range overflow
 				out = append(out, setMap[mapIndex]-mapLow+mapLow)
 				out = append(out, setMap[mapIndex]-mapLow+seedHigh)
 				seeds = append(seeds, seedLow)
 				seeds = append(seeds, mapLow-1)
 				boolSet = true
-				fmt.Print("3:")
 			} else if !boolSet && mapLow > seedLow && seedHigh > mapHigh { // Both Left and Right Range Overflow
 				out = append(out, mapLow)
 				out = append(out, mapHigh)
@@ -148,16 +139,12 @@ func part2_helper(seeds []int, setMap []int) []int {
 				seeds = append(seeds, mapHigh+1)
 				seeds = append(seeds, seedHigh)
 				boolSet = true
-				fmt.Print("4:")
 			}
-
 		}
-
 		if !boolSet {
 			out = append(out, seeds[seedIndex])
 			out = append(out, seeds[seedIndex+1])
 		}
-
 	}
 	return out
 }
