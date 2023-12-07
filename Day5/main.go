@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Printf("The smalles Almanac value is: %d\n", part2(parser()))
+	fmt.Printf("The smallest Almanac value is: %d\n", part2(parser()))
 }
 
 type Almanac struct {
@@ -94,9 +94,10 @@ func part2(a Almanac) int {
 		seeds = append(seeds, a.seeds[index])
 		seeds = append(seeds, a.seeds[index]+a.seeds[index+1]-1)
 	}
-	for index := range a.maps {
-		seeds = part1_helper(seeds, a.maps[index])
-		fmt.Println(seeds)
+	//for index := range a.maps {
+	for index := 0; index < len(a.maps); index += 1 {
+		seeds = part2_helper(seeds, a.maps[index])
+		//fmt.Println(seeds)
 	}
 
 	smallest := -1
@@ -105,39 +106,56 @@ func part2(a Almanac) int {
 			smallest = seeds[index]
 		}
 	}
+	// fmt.Print("The Final seed is: ")
+	// fmt.Println(seeds)
 	return smallest
 }
 
 func part2_helper(seeds []int, setMap []int) []int {
 	out := []int{}
 	for seedIndex := 0; seedIndex < len(seeds); seedIndex += 2 {
+		fmt.Println(seeds)
 		boolSet := false
-		seedHigh := seeds[seedIndex]
-		seedLow := seeds[seedIndex+1]
+		seedHigh := seeds[seedIndex+1]
+		seedLow := seeds[seedIndex]
 		for mapIndex := 0; mapIndex < len(setMap); mapIndex += 3 {
 			mapHigh := setMap[mapIndex+1] + setMap[mapIndex+2] - 1
 			mapLow := setMap[mapIndex+1]
-			if !boolSet && mapLow <= seedLow && seedHigh <= mapHigh {
+			if !boolSet && mapLow <= seedLow && seedHigh <= mapHigh { // Completly in range
 				out = append(out, setMap[mapIndex]-mapLow+seedLow)
 				out = append(out, setMap[mapIndex]-mapLow+seedHigh)
 				boolSet = true
-			} else if !boolSet && mapLow > seedLow && seedHigh <= mapHigh {
-				out = append(out)
-				out = append(out)
-				seeds = append(seeds)
-				seeds = append(seeds)
-			} else if !boolSet && mapLow > seedLow && seedHigh > mapHigh {
-				out = append(out)
-				out = append(out)
-				seeds = append(seeds)
-				seeds = append(seeds)
-				seeds = append(seeds)
-				seeds = append(seeds)
+				fmt.Print("1:")
+			} else if !boolSet && mapLow <= seedLow && seedHigh > mapHigh && seedLow <= mapHigh { // Left Range overflow
+				out = append(out, setMap[mapIndex]-mapLow+seedLow)
+				out = append(out, setMap[mapIndex]-mapLow+mapHigh)
+				seeds = append(seeds, mapHigh+1)
+				seeds = append(seeds, seedHigh)
+				boolSet = true
+				fmt.Print("2:")
+			} else if !boolSet && mapLow > seedLow && seedHigh <= mapHigh && seedHigh >= mapLow { // Right Range overflow
+				out = append(out, setMap[mapIndex]-mapLow+mapLow)
+				out = append(out, setMap[mapIndex]-mapLow+seedHigh)
+				seeds = append(seeds, seedLow)
+				seeds = append(seeds, mapLow-1)
+				boolSet = true
+				fmt.Print("3:")
+			} else if !boolSet && mapLow > seedLow && seedHigh > mapHigh { // Both Left and Right Range Overflow
+				out = append(out, mapLow)
+				out = append(out, mapHigh)
+				seeds = append(seeds, seedLow)
+				seeds = append(seeds, mapLow-1)
+				seeds = append(seeds, mapHigh+1)
+				seeds = append(seeds, seedHigh)
+				boolSet = true
+				fmt.Print("4:")
 			}
 
 		}
+
 		if !boolSet {
 			out = append(out, seeds[seedIndex])
+			out = append(out, seeds[seedIndex+1])
 		}
 
 	}
