@@ -24,10 +24,10 @@ fn part1(input: String) {
         //println!("The next in search is: {}", next);
         vec_next = hashmap.get(next).unwrap();
         if &directions[count%directions.len()] == &'L' {
-            next = &vec_next[0]
+            next = &vec_next[0];
         }
         else {
-            next = &vec_next[1]
+            next = &vec_next[1];
         }
         count += 1;
     }
@@ -40,24 +40,61 @@ fn part2(input:String) {
     let mut hashmap: HashMap<String, Vec<String>> = HashMap::new();
     let collection = lines.next().unwrap();
     let directions: Vec<char> = collection.chars().collect();
+    let mut vec_start:  Vec<&str> = Vec::new();
     lines.next();
     for line in lines {
-        hashmap.insert(line[2..3].to_string(), vec![line[7..10].to_string(), line[12..15].to_string(), line[0..3].to_string()]);
+        let string1 = &line[..3];
+        hashmap.insert(string1.to_string(), vec![line[7..10].to_string(), line[12..15].to_string()]);
+        if line.chars().nth(2).unwrap() == 'A' {
+             vec_start.push(string1);
+        }
     }
-    println!("{:?}", hashmap);
-    let mut count: usize = 0;
-    let mut next: &String = &"__A".to_string(); //Vec<String> all indexes of A
-    // let mut end: Vec<String> new vec(); all ends with Z
-    let mut vec_next: &Vec<String>;
-    while next != "Z" {
-        //println!("The next in search is: {}", next);
-        vec_next = hashmap.get(next).unwrap();
-        if &directions[count%directions.len()] == &'L' {
-            next = &vec_next[0]
+    let mut vec_count:  Vec<usize> = Vec::new();
+    //let mut vec_wrap:  Vec<&String> = Vec::new(); supposidly dont need...
+    for index in 0..vec_start.len() {
+        vec_count.push(0);
+        let mut next:  &str = vec_start[index];
+        let mut vec_next: &Vec<String>;
+        while next.chars().nth(2).unwrap() != 'Z' {
+            vec_next = hashmap.get(next).unwrap();
+            if &directions[vec_count[index]%directions.len()] == &'L' {
+                next = &vec_next[0];
+            }
+            else {
+                next = &vec_next[1];
+            }
+            vec_count[index] += 1;
         }
-        else {
-            next = &vec_next[1]
+    }
+
+    let mut output: usize = 0;
+    output = lcm(vec_count[0], vec_count[1]);
+    for index in (1..vec_count.len()) {
+        output = lcm(output, vec_count[index]);
+    }
+    println!("{:?}", output);
+} 
+
+fn lcm(first: usize, second: usize) -> usize {
+    first * second / gcd(first, second)
+}
+
+fn gcd(first: usize, second: usize) -> usize {
+    let mut max = first;
+    let mut min = second;
+    if min > max {
+        let val = max;
+        max = min;
+        min = val;
+    }
+
+    loop {
+        let res = max % min;
+        if res == 0 {
+            return min;
         }
-        count += 1;
+
+        max = min;
+        min = res;
     }
 }
