@@ -3,8 +3,8 @@ use std::collections::HashMap;
 fn main() {
     // Parser reading file as string
     let input: String = fs::read_to_string("input.text").expect("Error in reading the file").to_string();
-    //part1(input);
-    part2(input);
+    part1(input.clone());
+    part2(input.clone());
 }
 
 
@@ -72,7 +72,7 @@ fn part2(input:String) {
     for index in (1..vec_count.len()) {
         output = lcm(output, vec_count[index]);
     }
-    println!("{:?}", output);
+    println!("\"Z\" Found. Ammount of tries: {}", output);
 } 
 
 fn lcm(first: usize, second: usize) -> usize {
