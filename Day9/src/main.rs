@@ -2,7 +2,7 @@ use std::{fs};
 
 fn main() {
     let input: String = fs::read_to_string("input.text").expect("Error in reading the file").to_string();
-    // part1(input.clone());
+    part1(input.clone());
     part2(input.clone());
 }
 
@@ -29,7 +29,7 @@ fn part1(input: String) {
         }
         
     }
-    println!("PART 1 :--: The final addition of the hisotry is: {}", count);
+    println!("PART 1 :--: The final extrapolated values is: {}", count);
 }
 
 fn part2(input: String) {
@@ -49,13 +49,13 @@ fn part2(input: String) {
             vIndex += 1;
 
         }
-        
-        for slice in &sensor {
-            count += slice.last().unwrap();
+        let mut num = 0;
+        for index in (1..sensor.len()).rev() {
+            num = sensor[index-1][0] - num;
         }
-        
+        count += num;
     }
-    println!("PART 1 :--: The final addition of the hisotry is: {}", count);
+    println!("PART 2 :--: The final extrapolated values is: {}", count);
 }
 
 
