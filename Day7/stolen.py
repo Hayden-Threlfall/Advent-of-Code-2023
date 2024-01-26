@@ -41,7 +41,7 @@ def strength(hand, part2):
   else:
     assert False, f'{C} {hand} {sorted(C.values())}'
 
-for part2 in [False]:
+for part2 in [False, True]:
   H = []
   for line in L:
     hand,bid = line.split()
@@ -49,6 +49,6 @@ for part2 in [False]:
   H = sorted(H, key=lambda hb:strength(hb[0], part2))
   ans = 0
   for i,(h,b) in enumerate(H):
-    #print(i,h,b)
+    print(i,h,b)
     ans += (i+1)*int(b)
   print(ans)

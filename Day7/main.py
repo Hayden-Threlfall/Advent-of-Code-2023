@@ -2,8 +2,8 @@ import sys
 import math
 
 # dict2 = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':1, 'Q':12, 'K':13, 'A':14}
-dict = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':10, 'Q':12, 'K':13, 'A':14}
-
+dict = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':1, 'Q':12, 'K':13, 'A':14}
+next_set = {5:7, 7:9, 9:11, 11:13, 13:17, 17:25, 25:25} #may skip 32
 # Five of a kind    5*5 = 25
 # Four of a kind    4*4 +1 = 17
 # Full house        3*3 + 2*2 = 13
@@ -34,6 +34,8 @@ def bubbleSort(arr, arr2, arr3):
 
 with open('input.text', 'r') as file:
         lines = file.readlines()
+        
+part1 = False
 hands:list[str] = []
 hands_val:list[int] = []
 bets:list[int] = []
@@ -46,6 +48,9 @@ for line in lines:
 for index in range(len(hands)):
     for ch in hands[index]:
         hands_val[index] += hands[index].count(ch)
+for index in range(len(hands)):
+    for c in range(hands[index].count('J')):
+        hands_val[index] = next_set[hands_val[index]]
 bubbleSort(hands_val, hands, bets)
 
 
@@ -53,5 +58,6 @@ count = 0
 for i in range(len(bets)):
     count += bets[i] * (i+1)
 print(bets)
+print(hands_val)
 print(count)
 
